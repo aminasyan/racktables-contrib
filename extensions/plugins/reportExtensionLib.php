@@ -37,13 +37,25 @@ function getLocation($aObject) {
     # Try to read the mount informations of the object
     if ( function_exists('getMountInfo') ) {
         $mountInfo = getMountInfo (array($aObject['id']));
+        $locSeparator = "";
+        $locString = "";
+        foreach ($mountInfo[$aObject['id']] as $mountValue) {
+            if (isset($mountValue["row_name"])){
+                $locString = $locString.$locSeparator.$mountValue["row_name"].': ';
+                $locSeparator = " , ";
+                if (isset($mountValue["rack_name"]))
+                    $locString = $locString.$mountValue["rack_name"];
+            }
+            else {
+                if (isset($mountValue["rack_name"])){
+                    $locString = $locString.$locSeparator.$mountValue["rack_name"];
+                    $locSeparator = " , ";
+                }
+            }
+        }
 
-        if ( isset( $mountInfo[$aObject['id']][0]["rack_name"] ) )
-            $sRackName = $mountInfo[$aObject['id']][0]["rack_name"];
+    }
 
-        $sRowName = 'unknown';
-        if ( isset( $mountInfo[$aObject['id']][0]["row_name"] ) )
-            $sRowName = $mountInfo[$aObject['id']][0]["row_name"];
     }
     else {
         if ( isset( $aObject["Row_name"] ) )
@@ -81,7 +93,12 @@ function getLocation($aObject) {
         }
     }
     else {
-        $sLocation = $sRowName.': '.$sRackName;
+        if (empty ( $locString )) {
+            $sLocation = $sRowName.': '.$sRackName;
+        }
+        else {
+            $sLocation = $locString;
+        }
     }
 
     return $sLocation;
