@@ -66,7 +66,7 @@ function getLocation($aObject) {
     }
 
     # No mount information available - check for a container
-    if ( ( $sRowName == 'unknown' ) && ( $sRackName == 'unknown' ) && ( isset( $aObject['container_id'] ) ) ) {
+    if ( ( $sRowName == 'unknown' ) && ( $sRackName == 'unknown' ) && (empty ( $locString )) && ( isset( $aObject['container_id'] ) ) ) {
         $sContainerName = '<a href="'. makeHref ( array( 'page' => 'object', 'object_id' => $aObject['container_id']) )  .'">'.$aObject['container_name'].'</a>';
 
     	$attributes = getAttrValues ($aObject['id']);
