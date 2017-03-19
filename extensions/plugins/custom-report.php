@@ -556,9 +556,11 @@ function renderCustomReport()
                 foreach ( $Result['portsLinks'] as $port ) {
                    echo $port['name'].': ';
                    if ( $port['remote_object_name'] != 'unknown' )
-                       echo formatPortLink ($port['remote_object_id'], $port['remote_object_name'], $port['remote_id'], NULL);
+                       echo formatPortLink ($port['remote_object_id'], $port['remote_object_name'], $port['remote_id'], NULL).": ".$port['remote_name'];
+                   elseif ( isset ($port['reservation_comment']))
+                       echo "<font color=\"#A5A5A5\">".$port['reservation_comment']."</font>";
                    else
-                    echo $port['remote_object_name'];
+                       echo "<font color=\"#af0000\">".$port['remote_object_name']."</font>";
                    if ( trim($port['cableid']) != '')
                        echo ' Cable ID: '.$port['cableid'];
                    echo '<br/>';
